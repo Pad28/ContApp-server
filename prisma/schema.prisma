@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum User_roles {
+  ADMIN
+  ALUMNO
+  PROFESOR
+}
+
+model Usuario {
+  matricula String     @id @db.VarChar(7)
+  nombre    String     @db.VarChar(20)
+  apellidos String     @db.VarChar(20)
+  correo    String     @unique @db.VarChar(20)
+  password  String     @db.VarChar(100)
+  rol       User_roles
+
+  id_grupo String?
+  fk_grupo Grupo?  @relation(name: "alumno_grupo", fields: [id_grupo], references: [id])
+
+  fk_grupo_maestro Grupo[]         @relation(name: "maestro_grupo")
+  fk_publicaciones Publicaciones[]
+}
+
+model Grupo {
+  id      String @id @db.VarChar(7)
+  materia String @db.VarChar(10)
+
+  id_maestro String
+  fk_maestro Usuario @relation(name: "maestro_grupo", fields: [id_maestro], references: [matricula])
+
+  fk_alumnos Usuario[] @relation(name: "alumno_grupo")
+}
+
+model Publicaciones {
+  id                String   @id @default(uuid())
+  contenido         String   @db.VarChar(500)
+  fecha_publicacion DateTime
+
+  id_profesor String
+  fk_maestro  Usuario @relation(references: [matricula], fields: [id_profesor])
+}
