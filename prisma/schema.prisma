@@ -17,7 +17,7 @@ model Usuario {
   matricula String     @id @db.VarChar(7)
   nombre    String     @db.VarChar(20)
   apellidos String     @db.VarChar(20)
-  correo    String     @unique @db.VarChar(20)
+  correo    String     @unique @db.VarChar(30)
   password  String     @db.VarChar(100)
   rol       User_roles
 

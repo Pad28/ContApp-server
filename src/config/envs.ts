@@ -9,4 +9,6 @@ export const envs = {
     GMAIL_USER: get("GMAIL_USER").required().asEmailString(), // Usuario gmail de la aplicacion
     GMAIL_KEY: get("GMAIL_KEY").required().asString(), // Clave de aplicaciones de la cuenta gmail de la aplicacion
     API_SERVICE: get("API_SERVICE").required().asUrlString(), // Direccion o dominio donde se encuentra escuchando el servicio
+    // USER_ADMIN: get("USER_ADMIN").required().asEmailString(),
+    // PASSWORD_ADMIN: get("PASSWORD_ADMIN").required().asString(),
 }

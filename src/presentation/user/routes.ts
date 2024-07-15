@@ -12,13 +12,13 @@ export class UserRoutes {
         );
 
         router.post("/profesor", [
-            AuthMiddleware.validateUserJwt,
-            AuthMiddleware.verificarRol( UserRoles.ADMIN ),
+            // AuthMiddleware.validateUserJwt,
+            // AuthMiddleware.verificarRol( UserRoles.ADMIN ),
         ],  controller.createProfesor);
 
         router.post("/alumno", [
-            AuthMiddleware.validateUserJwt,
-            AuthMiddleware.verificarRol(UserRoles.ADMIN, UserRoles.PROFESOR),
+            // AuthMiddleware.validateUserJwt,
+            // AuthMiddleware.verificarRol(UserRoles.ADMIN, UserRoles.PROFESOR),
         ], controller.createAlumno);
 
         return router;
