@@ -15,8 +15,8 @@ enum User_roles {
 
 model Usuario {
   matricula String     @id @db.VarChar(7)
-  nombre    String     @db.VarChar(20)
-  apellidos String     @db.VarChar(20)
+  nombre    String     @db.VarChar(30)
+  apellidos String     @db.VarChar(30)
   correo    String     @unique @db.VarChar(30)
   password  String     @db.VarChar(100)
   rol       User_roles
@@ -29,9 +29,7 @@ model Usuario {
 }
 
 model Grupo {
-  id      String @id @db.VarChar(7)
-  materia String @db.VarChar(30)
-
+  id         String  @id @db.VarChar(12)
   id_maestro String
   fk_maestro Usuario @relation(name: "maestro_grupo", fields: [id_maestro], references: [matricula])
 
@@ -41,6 +39,7 @@ model Grupo {
 model Publicaciones {
   id                String   @id @default(uuid())
   contenido         String   @db.VarChar(500)
+  id_material       String?  @db.VarChar(38)
   fecha_publicacion DateTime
 
   id_profesor String

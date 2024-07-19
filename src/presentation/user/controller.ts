@@ -8,18 +8,24 @@ export class UserController extends AppController {
         private readonly userService: UserService,
     ) { super(); }
 
+    public getTeacharNames = (req: Request, res: Response) => {
+        this.userService.getTeacherNames()
+            .then(names => res.json(names))
+            .catch(error => this.triggerError(error, res));
+    }
+
     public createProfesor = (req: Request, res: Response) => {
         const [error, createProfesorDto] = CreateProfesorDto.create(req.body);
-        if(error || !createProfesorDto) return res.status(400).json({ error });
+        if (error || !createProfesorDto) return res.status(400).json({ error });
 
         this.userService.createProfesor(createProfesorDto)
             .then(user => res.json(user))
             .catch(error => this.triggerError(error, res));
     }
-    
+
     public createAlumno = (req: Request, res: Response) => {
         const [error, createAlumnoDto] = CreateAlumnoDto.create(req.body);
-        if(error || !createAlumnoDto) return res.status(400).json({ error });
+        if (error || !createAlumnoDto) return res.status(400).json({ error });
 
         this.userService.createAlumno(createAlumnoDto)
             .then(user => res.json(user))

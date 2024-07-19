@@ -6,15 +6,18 @@ import { AuthMiddleware } from "../middlewares";
 export class AuthRoutes {
     static get routes(): Router {
         const router = Router();
-        const controller = new AuthController( 
-            new AuhtService( 
+        const controller = new AuthController(
+            new AuhtService(
                 new EmailService(),
                 new TokenManager(),
             ),
         );
-        
+
         // Ruta para iniciar sesión como alumno
         router.post("/alumno", controller.loginAlumno);
+
+        // Ruta para iniciar sesión como profesor
+        router.post("/profesor", controller.loginProfesor);
 
         // Ruta para enviar correo de verificación a alumno
         router.post("/alumno/send-email/:matricula", controller.sendVerifyEmailAlumno);
