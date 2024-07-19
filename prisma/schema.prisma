@@ -30,7 +30,7 @@ model Usuario {
 
 model Grupo {
   id      String @id @db.VarChar(7)
-  materia String @db.VarChar(10)
+  materia String @db.VarChar(30)
 
   id_maestro String
   fk_maestro Usuario @relation(name: "maestro_grupo", fields: [id_maestro], references: [matricula])
