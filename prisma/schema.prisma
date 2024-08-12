@@ -26,6 +26,8 @@ model Usuario {
 
   fk_grupo_maestro Grupo[]         @relation(name: "maestro_grupo")
   fk_publicaciones Publicaciones[]
+
+  fk_actividad ActividadContestada[]
 }
 
 model Grupo {
@@ -44,4 +46,50 @@ model Publicaciones {
 
   id_profesor String
   fk_maestro  Usuario @relation(references: [matricula], fields: [id_profesor])
+}
+
+model ActividadContestada {
+  id           String   @id @default(uuid())
+  fecha        DateTime @db.DateTime()
+  aciertos     String   @db.VarChar(10)
+  calificacion Float
+
+  id_alumno String  @db.VarChar(38)
+  fk_alumno Usuario @relation(references: [matricula], fields: [id_alumno])
+
+  id_actividad String    @db.VarChar(38)
+  fk_actividad Actividad @relation(fields: [id_actividad], references: [id])
+
+  @@unique([id_alumno, id_actividad])
+}
+
+model Actividad {
+  id               String   @id @default(uuid())
+  nombre           String   @unique @db.VarChar(38)
+  fecha_creacion   DateTime @db.DateTime()
+  fecha_activacion DateTime @db.DateTime()
+  fecha_limite     DateTime @db.DateTime()
+  total_preguntas  Int
+
+  fk_pregunta   Pregunta[]
+  fk_contestada ActividadContestada[]
+}
+
+model Pregunta {
+  id       String @id @default(uuid())
+  pregunta String @db.VarChar(150)
+
+  id_actividad String    @db.VarChar(40)
+  fk_actividad Actividad @relation(fields: [id_actividad], references: [id])
+
+  fk_respuesta Respuesta[]
+}
+
+model Respuesta {
+  id         String  @id @default(uuid())
+  respuesta  String  @db.VarChar(200)
+  esCorrecta Boolean
+
+  id_pregunta String   @db.VarChar(40)
+  fk_pregunta Pregunta @relation(fields: [id_pregunta], references: [id])
 }

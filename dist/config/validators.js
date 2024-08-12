@@ -103,5 +103,13 @@ class Validators {
         if (this.data[key])
             this.isUIID(key);
     }
+    ifExistsCheckPattern(key, pattern) {
+        if (this.data[key])
+            this.checkPattern(key, pattern);
+    }
+    ifExistIsEmail(key) {
+        if (this.data[key])
+            this.isEmail(key);
+    }
 }
 exports.Validators = Validators;

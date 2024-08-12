@@ -36,6 +36,15 @@ class AuthController extends share_1.AppController {
                 .then(user => res.json(user))
                 .catch(error => this.triggerError(error, res));
         };
+        // Iniciar sesión como profesor
+        this.loginProfesor = (req, res) => {
+            const [error, loginDto] = dtos_1.LoginProfesorDto.create(req.body);
+            if (error || !loginDto)
+                return res.status(400).json({ error });
+            this.authService.loginProfesor(loginDto)
+                .then(user => res.json(user))
+                .catch(error => this.triggerError(error, res));
+        };
         // Enviar correo de recuperación de contraseña
         this.forgotPassword = (req, res) => {
             const [error, forgotPasswordDto] = dtos_1.ForgotPasswordDto.create(req.body);
@@ -53,6 +62,15 @@ class AuthController extends share_1.AppController {
                 return res.status(400).json({ error });
             this.authService.recoveryPassword(recoverPasswordDto)
                 .then(msg => res.json(msg))
+                .catch(error => this.triggerError(error, res));
+        };
+        this.renewJWT = (req, res) => {
+            const { user } = req.body;
+            const [error, renewTokenDto] = dtos_1.RenewTokenDto.create(user);
+            if (error || !renewTokenDto)
+                return res.status(400).json({ error });
+            this.authService.renewToken(renewTokenDto)
+                .then(user => res.json(user))
                 .catch(error => this.triggerError(error, res));
         };
     }

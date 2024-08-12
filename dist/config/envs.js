@@ -11,4 +11,6 @@ exports.envs = {
     GMAIL_USER: (0, env_var_1.get)("GMAIL_USER").required().asEmailString(), // Usuario gmail de la aplicacion
     GMAIL_KEY: (0, env_var_1.get)("GMAIL_KEY").required().asString(), // Clave de aplicaciones de la cuenta gmail de la aplicacion
     API_SERVICE: (0, env_var_1.get)("API_SERVICE").required().asUrlString(), // Direccion o dominio donde se encuentra escuchando el servicio
+    USER_ADMIN: (0, env_var_1.get)("USER_ADMIN").required().asEmailString(),
+    PASSWORD_ADMIN: (0, env_var_1.get)("PASSWORD_ADMIN").required().asString(),
 };

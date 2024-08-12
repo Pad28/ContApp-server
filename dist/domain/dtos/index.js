@@ -14,10 +14,13 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./auth/register-student"), exports);
 __exportStar(require("./auth/check-email-alumno.dto"), exports);
-__exportStar(require("./auth/login-alumno.dto"), exports);
 __exportStar(require("./auth/forgot-password.dto"), exports);
+__exportStar(require("./auth/login-alumno.dto"), exports);
+__exportStar(require("./auth/login-profesor.dto"), exports);
 __exportStar(require("./auth/recover-password.dto"), exports);
+__exportStar(require("./auth/register-student"), exports);
+__exportStar(require("./auth/renew-token.dto"), exports);
+__exportStar(require("./grupo/create-grupo.dto"), exports);
 __exportStar(require("./user/create-alumno.dto"), exports);
 __exportStar(require("./user/create-profesor.dto"), exports);

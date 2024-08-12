@@ -7,6 +7,11 @@ class UserController extends share_1.AppController {
     constructor(userService) {
         super();
         this.userService = userService;
+        this.getTeacharNames = (req, res) => {
+            this.userService.getTeacherNames()
+                .then(names => res.json(names))
+                .catch(error => this.triggerError(error, res));
+        };
         this.createProfesor = (req, res) => {
             const [error, createProfesorDto] = dtos_1.CreateProfesorDto.create(req.body);
             if (error || !createProfesorDto)

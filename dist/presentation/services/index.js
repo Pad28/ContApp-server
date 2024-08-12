@@ -18,3 +18,4 @@ __exportStar(require("./auth.service"), exports);
 __exportStar(require("./emai.service"), exports);
 __exportStar(require("./token-manager.service"), exports);
 __exportStar(require("./user.service"), exports);
+__exportStar(require("./grupo.service"), exports);

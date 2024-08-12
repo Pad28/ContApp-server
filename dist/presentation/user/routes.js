@@ -10,6 +10,7 @@ class UserRoutes {
     static get routes() {
         const router = (0, express_1.Router)();
         const controller = new controller_1.UserController(new services_1.UserService());
+        router.get("/profesor/names", controller.getTeacharNames);
         router.post("/profesor", [
             middlewares_1.AuthMiddleware.validateUserJwt,
             middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.ADMIN),

@@ -65,7 +65,9 @@ class AuhtService {
                 throw domain_1.RequestError.badRequest("Grupo no valido");
             const password = config_1.bcryptjsAdapter.hash(regsiterStudentDto.password);
             const { token } = regsiterStudentDto, rest = __rest(regsiterStudentDto, ["token"]);
-            const _a = yield usuario.create({ data: Object.assign(Object.assign({}, rest), { password, correo: `${payload.id}@upt.edu.mx`, matricula: payload.id, rol: client_1.User_roles.ALUMNO }) }), { password: registeredPAssword } = _a, newUser = __rest(_a, ["password"]);
+            const _a = yield usuario.create({
+                data: Object.assign(Object.assign({}, rest), { password, correo: `${payload.id}@upt.edu.mx`, matricula: payload.id, rol: client_1.User_roles.ALUMNO })
+            }), { password: registeredPAssword } = _a, newUser = __rest(_a, ["password"]);
             return newUser;
         });
     }
@@ -84,7 +86,27 @@ class AuhtService {
                 throw domain_1.RequestError.internalServerError();
             const { password } = existAlumno, data = __rest(existAlumno, ["password"]);
             return {
-                alumno: data,
+                user: data,
+                token,
+            };
+        });
+    }
+    // Iniciar sesión como profesor
+    loginProfesor(loginDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { usuario } = data_1.prisma;
+            const existProfesor = yield usuario.findUnique({ where: { correo: loginDto.correo } });
+            if (!existProfesor)
+                throw domain_1.RequestError.badRequest("Correo/Contraseña no valida");
+            const isMatch = config_1.bcryptjsAdapter.compare(loginDto.passsword, existProfesor.password);
+            if (!isMatch)
+                throw domain_1.RequestError.badRequest("Correo/Contraseña no valida");
+            const token = yield config_1.JwtAdapter.generateToken({ id: existProfesor.matricula });
+            if (!token)
+                throw domain_1.RequestError.internalServerError();
+            const { password } = existProfesor, data = __rest(existProfesor, ["password"]);
+            return {
+                user: data,
                 token,
             };
         });
@@ -129,6 +151,21 @@ class AuhtService {
             });
             this.tokenManager.saveToken(token);
             return { msg: "Constraseña actualizada" };
+        });
+    }
+    renewToken(renewTokenDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { usuario } = data_1.prisma;
+            const existUser = yield usuario.findUnique({ where: { matricula: renewTokenDto.matricula } });
+            if (!existUser)
+                throw domain_1.RequestError.badRequest("Usuario no valido");
+            const token = yield config_1.JwtAdapter.generateToken({ id: renewTokenDto.matricula });
+            if (!token)
+                throw domain_1.RequestError.internalServerError();
+            return {
+                user: renewTokenDto,
+                token
+            };
         });
     }
 }

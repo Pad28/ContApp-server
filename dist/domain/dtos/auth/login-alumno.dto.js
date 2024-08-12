@@ -10,7 +10,7 @@ class LoginAlumnoDto {
     static create(data) {
         try {
             const validator = new config_1.Validators(data);
-            validator.requiredKeys('matricula', 'password');
+            validator.requiredKeys('password', 'matricula');
             validator.checkPattern('matricula', /^\d{7}$/);
             validator.isString("password");
             const { matricula, password } = data;

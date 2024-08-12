@@ -26,6 +26,20 @@ const data_1 = require("../../data");
 const domain_1 = require("../../domain");
 class UserService {
     constructor() { }
+    getTeacherNames() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { usuario } = data_1.prisma;
+            const results = yield usuario.findMany({
+                where: { rol: "PROFESOR" },
+                select: {
+                    nombre: true,
+                    apellidos: true,
+                    id_grupo: true,
+                }
+            });
+            return { results };
+        });
+    }
     createProfesor(createProfesorDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const { usuario } = data_1.prisma;
@@ -38,7 +52,9 @@ class UserService {
             if (correoExists)
                 throw domain_1.RequestError.badRequest("El correo ya fue registrado");
             const password = config_1.bcryptjsAdapter.hash(createProfesorDto.password);
-            const _a = yield usuario.create({ data: Object.assign(Object.assign({}, createProfesorDto), { rol: createProfesorDto.rol, password }) }), { password: registeredPassword, id_grupo } = _a, newUser = __rest(_a, ["password", "id_grupo"]);
+            const _a = yield usuario.create({
+                data: Object.assign(Object.assign({}, createProfesorDto), { rol: createProfesorDto.rol, password })
+            }), { password: registeredPassword, id_grupo } = _a, newUser = __rest(_a, ["password", "id_grupo"]);
             return newUser;
         });
     }
@@ -57,7 +73,9 @@ class UserService {
             if (!grupoExist)
                 throw domain_1.RequestError.badRequest("El grupo no es valido");
             const password = config_1.bcryptjsAdapter.hash(createAlumnoDto.password);
-            const _a = yield usuario.create({ data: Object.assign(Object.assign({}, createAlumnoDto), { rol: createAlumnoDto.rol, password }) }), { password: registeredPassword } = _a, newUser = __rest(_a, ["password"]);
+            const _a = yield usuario.create({
+                data: Object.assign(Object.assign({}, createAlumnoDto), { rol: createAlumnoDto.rol, password })
+            }), { password: registeredPassword } = _a, newUser = __rest(_a, ["password"]);
             return newUser;
         });
     }

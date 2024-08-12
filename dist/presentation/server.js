@@ -34,9 +34,8 @@ class Server {
             this.app.use(express_1.default.static(this.options.publicPath));
             // Routes
             this.app.use(this.routes);
-            this.app.get("/test/:token", (req, res) => {
-                const data = {};
-                res.json({ msg: "Test OK", data });
+            this.app.get("/test", (req, res) => {
+                res.sendFile(path_1.default.resolve(__dirname, "../../public/Guía de estudio-Las cuentas.pdf"));
             });
             this.app.get("*", (req, res) => {
                 res.sendFile(path_1.default.join(__dirname, `../../${this.options.publicPath}`, "index.html"));
