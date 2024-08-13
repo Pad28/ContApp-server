@@ -18,8 +18,6 @@ export class UserRoutes {
             AuthMiddleware.verificarRol(UserRoles.ADMIN),
         ], controller.createProfesor);
 
-
-
         router.post("/alumno", [
             AuthMiddleware.validateUserJwt,
             AuthMiddleware.verificarRol(UserRoles.ADMIN, UserRoles.PROFESOR),

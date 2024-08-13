@@ -77,7 +77,7 @@ class Validators {
     checkPattern(key, pattern) {
         this.isRequired(key);
         if (!pattern.test(this.data[key]))
-            throw `${key} no valido`;
+            throw `Formato de ${key} no valido`;
     }
     ifExistCapitalizar(key) {
         if (this.data[key] && this.data[key].lenght !== 0)

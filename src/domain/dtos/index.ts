@@ -8,3 +8,4 @@ export * from "./auth/renew-token.dto";
 export * from "./grupo/create-grupo.dto";
 export * from "./user/create-alumno.dto";
 export * from "./user/create-profesor.dto";
+export * from "./actividad/create-actividad.dto";

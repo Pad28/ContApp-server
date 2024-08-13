@@ -77,7 +77,7 @@ export class Validators {
 
     public checkPattern(key: string, pattern: RegExp) {
         this.isRequired(key);
-        if (!pattern.test(this.data[key])) throw `${key} no valido`;
+        if (!pattern.test(this.data[key])) throw `Formato de ${key} no valido`;
     }
 
     public ifExistCapitalizar(key: string) {

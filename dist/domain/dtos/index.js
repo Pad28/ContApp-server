@@ -24,3 +24,4 @@ __exportStar(require("./auth/renew-token.dto"), exports);
 __exportStar(require("./grupo/create-grupo.dto"), exports);
 __exportStar(require("./user/create-alumno.dto"), exports);
 __exportStar(require("./user/create-profesor.dto"), exports);
+__exportStar(require("./actividad/create-actividad.dto"), exports);

@@ -69,7 +69,6 @@ model Actividad {
   fecha_creacion   DateTime @db.DateTime()
   fecha_activacion DateTime @db.DateTime()
   fecha_limite     DateTime @db.DateTime()
-  total_preguntas  Int
 
   fk_pregunta   Pregunta[]
   fk_contestada ActividadContestada[]
