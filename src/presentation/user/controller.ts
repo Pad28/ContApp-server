@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AppController } from "../share";
-import { CreateAlumnoDto, CreateProfesorDto } from "../../domain/dtos";
+import { CreateAlumnoDto, CreateProfesorDto, UpdateAlumnoDto, UpdateProfesorDto } from "../../domain/dtos";
 import { UserService } from "../services";
 
 export class UserController extends AppController {
@@ -30,5 +30,32 @@ export class UserController extends AppController {
         this.userService.createAlumno(createAlumnoDto)
             .then(user => res.json(user))
             .catch(error => this.triggerError(error, res));
+    }
+
+    public updateAlumno = (req: Request, res: Response) => {
+        const { id } = req.params;
+        const { user } = req.body;
+        if (id !== user.matricula) return res.status(401).json({ error: "No autorizado" });
+
+        const [error, updateAlumnoDto] = UpdateAlumnoDto.create({ ...req.body, matricula: id });
+        if (error || !updateAlumnoDto) return res.status(400).json({ error });
+
+        this.userService.updateAlumno(updateAlumnoDto)
+            .then(user => res.json(user))
+            .catch(error => this.triggerError(error, res));
+    }
+
+    public updateProfesor = (req: Request, res: Response) => {
+        const { id } = req.params;
+        const { user } = req.body;
+        if (id !== user.matricula) return res.status(401).json({ error: "No autorizado" });
+
+        const [error, updateProfesorDto] = UpdateProfesorDto.create({ ...req.body, matricula: id });
+        if (error || !updateProfesorDto) return res.status(400).json({ error });
+
+        this.userService.updateProfesor(updateProfesorDto)
+            .then(user => res.json(user))
+            .catch(error => this.triggerError(error, res));
+
     }
 }

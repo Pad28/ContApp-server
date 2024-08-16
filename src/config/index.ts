@@ -4,3 +4,4 @@ export * from "./logger.adapter";
 export * from "./jwt.adapter";
 export * from "./validators";
 export * from "./email-templates";
+export * from "./uuid.adapater";

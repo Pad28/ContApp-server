@@ -10,9 +10,9 @@ export class CreateAlumnoDto {
         public readonly nombre: string,
         public readonly apellidos: string,
         public readonly password: string,
-        public readonly id_grupo: string, 
-        public readonly rol: string, 
-    ) {}
+        public readonly id_grupo: string,
+        public readonly rol: string,
+    ) { }
 
     static create(data: DynamicObject): [string?, CreateAlumnoDto?] {
         try {
@@ -28,14 +28,14 @@ export class CreateAlumnoDto {
             validators.checkPattern("matricula", /^\d{1,7}$/);
             validators.capitalizar("nombre");
             validators.capitalizar("apellidos");
-            
-            const { matricula, nombre, apellidos, password, id_grupo } = validators.data; 
+
+            const { matricula, nombre, apellidos, password, id_grupo } = validators.data;
             return [undefined, new CreateAlumnoDto(
-                matricula, 
+                matricula,
                 matricula + "@upt.edu.mx",
-                nombre, 
-                apellidos, 
-                password, 
+                nombre,
+                apellidos,
+                password,
                 id_grupo,
                 UserRoles.ALUMNO,
             )];

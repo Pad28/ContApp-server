@@ -24,10 +24,10 @@ model Usuario {
   id_grupo String?
   fk_grupo Grupo?  @relation(name: "alumno_grupo", fields: [id_grupo], references: [id])
 
-  fk_grupo_maestro Grupo[]         @relation(name: "maestro_grupo")
-  fk_publicaciones Publicaciones[]
+  fk_grupo_maestro Grupo[] @relation(name: "maestro_grupo")
 
-  fk_actividad ActividadContestada[]
+  fk_actividad   ActividadContestada[]
+  fk_publicacion Publicacion[]
 }
 
 model Grupo {
@@ -35,24 +35,27 @@ model Grupo {
   id_maestro String
   fk_maestro Usuario @relation(name: "maestro_grupo", fields: [id_maestro], references: [matricula])
 
-  fk_alumnos Usuario[] @relation(name: "alumno_grupo")
+  fk_alumnos     Usuario[]     @relation(name: "alumno_grupo")
+  fk_publicacion Publicacion[]
 }
 
-model Publicaciones {
+model Publicacion {
   id                String   @id @default(uuid())
+  titulo            String   @db.VarChar(500)
   contenido         String   @db.VarChar(500)
-  id_material       String?  @db.VarChar(38)
+  id_material       String   @db.VarChar(50)
   fecha_publicacion DateTime
 
+  id_grupo String
+  fk_grupo Grupo  @relation(references: [id], fields: [id_grupo])
+
   id_profesor String
-  fk_maestro  Usuario @relation(references: [matricula], fields: [id_profesor])
+  fk_profesor Usuario @relation(references: [matricula], fields: [id_profesor])
 }
 
 model ActividadContestada {
-  id           String   @id @default(uuid())
-  fecha        DateTime @db.DateTime()
-  aciertos     String   @db.VarChar(10)
-  calificacion Float
+  id    String   @id @default(uuid())
+  fecha DateTime @db.DateTime()
 
   id_alumno String  @db.VarChar(38)
   fk_alumno Usuario @relation(references: [matricula], fields: [id_alumno])

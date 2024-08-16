@@ -11,14 +11,24 @@ export class ActividadRoutes {
             new ActividadService()
         );
 
+        router.get("/", [
+            AuthMiddleware.validateUserJwt
+        ], controller.getActividades);
+
         router.post("/", [
             AuthMiddleware.validateUserJwt,
             AuthMiddleware.verificarRol(UserRoles.PROFESOR, UserRoles.ADMIN),
         ], controller.createActividad);
 
-        router.get("/", [
-            AuthMiddleware.validateUserJwt
-        ], controller.getActividades);
+        router.put("/:id", [
+            AuthMiddleware.validateUserJwt,
+            AuthMiddleware.verificarRol(UserRoles.PROFESOR, UserRoles.ADMIN),
+        ], controller.updateActividad);
+
+        router.delete("/:id", [
+            AuthMiddleware.validateUserJwt,
+            AuthMiddleware.verificarRol(UserRoles.PROFESOR, UserRoles.ADMIN),
+        ], controller.deleteActivity);
 
         return router;
     }

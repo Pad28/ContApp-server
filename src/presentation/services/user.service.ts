@@ -2,7 +2,7 @@ import { User_roles } from "@prisma/client";
 import { bcryptjsAdapter } from "../../config";
 import { prisma } from "../../data";
 import { RequestError } from "../../domain";
-import { CreateAlumnoDto, CreateProfesorDto } from "../../domain/dtos";
+import { CreateAlumnoDto, CreateProfesorDto, UpdateAlumnoDto, UpdateProfesorDto } from "../../domain/dtos";
 
 
 export class UserService {
@@ -68,4 +68,47 @@ export class UserService {
 
         return newUser;
     }
+
+    public async updateAlumno(updateUserDto: UpdateAlumnoDto) {
+        const { usuario, grupo } = prisma;
+        const { matricula, ...data } = updateUserDto.values;
+
+        const existUser = await usuario.findUnique({ where: { matricula } });
+        if (!existUser) throw RequestError.badRequest("Matricula no valida");
+
+        if (updateUserDto.id_grupo) {
+            const existGrupo = await grupo.findUnique({ where: { id: updateUserDto.id_grupo } });
+            if (!existGrupo) RequestError.badRequest("Grupo no valido");
+        }
+
+        if (updateUserDto.password) data.password = bcryptjsAdapter.hash(updateUserDto.password);
+        const { password, ...rest } = await usuario.update({
+            where: { matricula },
+            data
+        });
+
+        return rest;
+    }
+
+    public async updateProfesor(updateUserDto: UpdateProfesorDto) {
+        const { usuario, grupo } = prisma;
+        const { matricula, ...data } = updateUserDto.values;
+
+        const existUser = await usuario.findUnique({ where: { matricula } });
+        if (!existUser) throw RequestError.badRequest("Matricula no valida");
+
+        if (updateUserDto.correo) {
+            const existEmail = await usuario.findUnique({ where: { correo: updateUserDto.correo } });
+            if (existEmail) RequestError.badRequest("Correo no valido");
+        }
+
+        if (updateUserDto.password) data.password = bcryptjsAdapter.hash(updateUserDto.password);
+        const { password, ...rest } = await usuario.update({
+            where: { matricula },
+            data
+        });
+
+        return rest;
+    }
+
 }

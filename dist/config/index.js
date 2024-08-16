@@ -20,3 +20,4 @@ __exportStar(require("./logger.adapter"), exports);
 __exportStar(require("./jwt.adapter"), exports);
 __exportStar(require("./validators"), exports);
 __exportStar(require("./email-templates"), exports);
+__exportStar(require("./uuid.adapater"), exports);

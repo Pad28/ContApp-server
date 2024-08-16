@@ -53,6 +53,11 @@ export class Validators {
         this.data[key] = array.join(' ');
     }
 
+    public includes(key: string, array: any[]) {
+        this.isRequired(key);
+        if (!array.includes(this.data[key])) throw `${key} no pertenece a ${array}`;
+    }
+
     public isBoolean(key: string) {
         if (typeof this.data[key] !== 'boolean') throw `${key} no es un boolean valido`;
     }
@@ -78,6 +83,10 @@ export class Validators {
     public checkPattern(key: string, pattern: RegExp) {
         this.isRequired(key);
         if (!pattern.test(this.data[key])) throw `Formato de ${key} no valido`;
+    }
+
+    public ifExistIsString(key: string) {
+        if (this.data[key]) this.isString(key);
     }
 
     public ifExistCapitalizar(key: string) {
@@ -110,5 +119,9 @@ export class Validators {
 
     public ifExistIsEmail(key: string) {
         if (this.data[key]) this.isEmail(key);
+    }
+
+    public ifExistIncludes(key: string, array: any[]) {
+        if (this.data[key]) this.includes(key, array);
     }
 }

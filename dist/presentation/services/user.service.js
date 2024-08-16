@@ -79,5 +79,47 @@ class UserService {
             return newUser;
         });
     }
+    updateAlumno(updateUserDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { usuario, grupo } = data_1.prisma;
+            const _a = updateUserDto.values, { matricula } = _a, data = __rest(_a, ["matricula"]);
+            const existUser = yield usuario.findUnique({ where: { matricula } });
+            if (!existUser)
+                throw domain_1.RequestError.badRequest("Matricula no valida");
+            if (updateUserDto.id_grupo) {
+                const existGrupo = yield grupo.findUnique({ where: { id: updateUserDto.id_grupo } });
+                if (!existGrupo)
+                    domain_1.RequestError.badRequest("Grupo no valido");
+            }
+            if (updateUserDto.password)
+                data.password = config_1.bcryptjsAdapter.hash(updateUserDto.password);
+            const _b = yield usuario.update({
+                where: { matricula },
+                data
+            }), { password } = _b, rest = __rest(_b, ["password"]);
+            return rest;
+        });
+    }
+    updateProfesor(updateUserDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { usuario, grupo } = data_1.prisma;
+            const _a = updateUserDto.values, { matricula } = _a, data = __rest(_a, ["matricula"]);
+            const existUser = yield usuario.findUnique({ where: { matricula } });
+            if (!existUser)
+                throw domain_1.RequestError.badRequest("Matricula no valida");
+            if (updateUserDto.correo) {
+                const existEmail = yield usuario.findUnique({ where: { correo: updateUserDto.correo } });
+                if (existEmail)
+                    domain_1.RequestError.badRequest("Correo no valido");
+            }
+            if (updateUserDto.password)
+                data.password = config_1.bcryptjsAdapter.hash(updateUserDto.password);
+            const _b = yield usuario.update({
+                where: { matricula },
+                data
+            }), { password } = _b, rest = __rest(_b, ["password"]);
+            return rest;
+        });
+    }
 }
 exports.UserService = UserService;

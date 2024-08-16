@@ -10,13 +10,21 @@ class ActividadRoutes {
     static get routes() {
         const router = (0, express_1.Router)();
         const controller = new controller_1.ActidvidadController(new services_1.ActividadService());
+        router.get("/", [
+            middlewares_1.AuthMiddleware.validateUserJwt
+        ], controller.getActividades);
         router.post("/", [
             middlewares_1.AuthMiddleware.validateUserJwt,
             middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.PROFESOR, data_1.UserRoles.ADMIN),
         ], controller.createActividad);
-        router.get("/", [
-            middlewares_1.AuthMiddleware.validateUserJwt
-        ], controller.getActividades);
+        router.put("/:id", [
+            middlewares_1.AuthMiddleware.validateUserJwt,
+            middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.PROFESOR, data_1.UserRoles.ADMIN),
+        ], controller.updateActividad);
+        router.delete("/:id", [
+            middlewares_1.AuthMiddleware.validateUserJwt,
+            middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.PROFESOR, data_1.UserRoles.ADMIN),
+        ], controller.deleteActivity);
         return router;
     }
 }

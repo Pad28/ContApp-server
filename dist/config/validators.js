@@ -53,6 +53,11 @@ class Validators {
         });
         this.data[key] = array.join(' ');
     }
+    includes(key, array) {
+        this.isRequired(key);
+        if (!array.includes(this.data[key]))
+            throw `${key} no pertenece a ${array}`;
+    }
     isBoolean(key) {
         if (typeof this.data[key] !== 'boolean')
             throw `${key} no es un boolean valido`;
@@ -78,6 +83,10 @@ class Validators {
         this.isRequired(key);
         if (!pattern.test(this.data[key]))
             throw `Formato de ${key} no valido`;
+    }
+    ifExistIsString(key) {
+        if (this.data[key])
+            this.isString(key);
     }
     ifExistCapitalizar(key) {
         if (this.data[key] && this.data[key].lenght !== 0)
@@ -110,6 +119,10 @@ class Validators {
     ifExistIsEmail(key) {
         if (this.data[key])
             this.isEmail(key);
+    }
+    ifExistIncludes(key, array) {
+        if (this.data[key])
+            this.includes(key, array);
     }
 }
 exports.Validators = Validators;

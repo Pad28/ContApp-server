@@ -20,6 +20,24 @@ class ActidvidadController extends share_1.AppController {
                 .then(actividad => res.json(actividad))
                 .catch(error => this.triggerError(error, res));
         };
+        this.updateActividad = (req, res) => {
+            const { id } = req.params;
+            const [error, updateDto] = dtos_1.UpdateActividadDto.create(Object.assign({ id }, req.body));
+            if (error || !updateDto)
+                return res.status(400).json({ error });
+            this.actividadService.updateActividad(updateDto)
+                .then(actividad => res.json(actividad))
+                .catch(error => this.triggerError(error, res));
+        };
+        this.deleteActivity = (req, res) => {
+            const { id } = req.params;
+            const [error, deleteDto] = dtos_1.DeleteActividadDto.create({ id });
+            if (error || !deleteDto)
+                return res.status(400).json({ error });
+            this.actividadService.deleteActividad(deleteDto)
+                .then(result => res.json(result))
+                .catch(error => this.triggerError(error, res));
+        };
     }
 }
 exports.ActidvidadController = ActidvidadController;

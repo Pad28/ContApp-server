@@ -28,6 +28,30 @@ class UserController extends share_1.AppController {
                 .then(user => res.json(user))
                 .catch(error => this.triggerError(error, res));
         };
+        this.updateAlumno = (req, res) => {
+            const { id } = req.params;
+            const { user } = req.body;
+            if (id !== user.matricula)
+                return res.status(401).json({ error: "No autorizado" });
+            const [error, updateAlumnoDto] = dtos_1.UpdateAlumnoDto.create(Object.assign(Object.assign({}, req.body), { matricula: id }));
+            if (error || !updateAlumnoDto)
+                return res.status(400).json({ error });
+            this.userService.updateAlumno(updateAlumnoDto)
+                .then(user => res.json(user))
+                .catch(error => this.triggerError(error, res));
+        };
+        this.updateProfesor = (req, res) => {
+            const { id } = req.params;
+            const { user } = req.body;
+            if (id !== user.matricula)
+                return res.status(401).json({ error: "No autorizado" });
+            const [error, updateProfesorDto] = dtos_1.UpdateProfesorDto.create(Object.assign(Object.assign({}, req.body), { matricula: id }));
+            if (error || !updateProfesorDto)
+                return res.status(400).json({ error });
+            this.userService.updateProfesor(updateProfesorDto)
+                .then(user => res.json(user))
+                .catch(error => this.triggerError(error, res));
+        };
     }
 }
 exports.UserController = UserController;

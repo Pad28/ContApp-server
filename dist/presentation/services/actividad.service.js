@@ -8,9 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActividadService = void 0;
 const data_1 = require("../../data");
+const domain_1 = require("../../domain");
 class ActividadService {
     getAvtividades() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -38,6 +50,29 @@ class ActividadService {
                     fecha_activacion: createDto.fecha_activacion,
                 }
             });
+        });
+    }
+    updateActividad(updateDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { actividad } = data_1.prisma;
+            const _a = updateDto.values, { id } = _a, data = __rest(_a, ["id"]);
+            const existActivity = yield actividad.findUnique({ where: { id } });
+            if (!existActivity)
+                throw domain_1.RequestError.badRequest("Actividad no encontrada");
+            return yield actividad.update({
+                where: { id },
+                data
+            });
+        });
+    }
+    deleteActividad(deleteDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { actividad } = data_1.prisma;
+            const existActivity = yield actividad.findUnique({ where: { id: deleteDto.id } });
+            if (!existActivity)
+                throw domain_1.RequestError.badRequest("Actividad no encontrada");
+            yield actividad.delete({ where: { id: deleteDto.id } });
+            return { message: "Actividad eliminada" };
         });
     }
 }

@@ -23,6 +23,16 @@ export class UserRoutes {
             AuthMiddleware.verificarRol(UserRoles.ADMIN, UserRoles.PROFESOR),
         ], controller.createAlumno);
 
+        router.put("/alumno/:id", [
+            AuthMiddleware.validateUserJwt,
+            AuthMiddleware.verificarRol(UserRoles.ALUMNO),
+        ], controller.updateAlumno);
+
+        router.put("/profesor/:id", [
+            AuthMiddleware.validateUserJwt,
+            AuthMiddleware.verificarRol(UserRoles.PROFESOR, UserRoles.ADMIN),
+        ], controller.updateProfesor);
+
         return router;
     }
 }

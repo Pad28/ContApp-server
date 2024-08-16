@@ -1,5 +1,6 @@
 import { prisma } from "../../data"
-import { CreateActividadDto } from "../../domain/dtos";
+import { RequestError } from "../../domain";
+import { CreateActividadDto, DeleteActividadDto, SearchIdDto, UpdateActividadDto } from "../../domain/dtos";
 
 
 export class ActividadService {
@@ -29,5 +30,28 @@ export class ActividadService {
                 fecha_activacion: createDto.fecha_activacion,
             }
         });
+    }
+
+    public async updateActividad(updateDto: UpdateActividadDto) {
+        const { actividad } = prisma;
+        const { id, ...data } = updateDto.values;
+
+        const existActivity = await actividad.findUnique({ where: { id } });
+        if (!existActivity) throw RequestError.badRequest("Actividad no encontrada");
+
+        return await actividad.update({
+            where: { id },
+            data
+        });
+    }
+
+    public async deleteActividad(deleteDto: DeleteActividadDto) {
+        const { actividad } = prisma;
+
+        const existActivity = await actividad.findUnique({ where: { id: deleteDto.id } });
+        if (!existActivity) throw RequestError.badRequest("Actividad no encontrada");
+
+        await actividad.delete({ where: { id: deleteDto.id } });
+        return { message: "Actividad eliminada" };
     }
 }
