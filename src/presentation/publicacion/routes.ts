@@ -34,6 +34,11 @@ export class PublicacionRoutes {
             upload.single("file"),
         ], controller.crearPublicacion);
 
+        router.put("/", [
+            AuthMiddleware.validateUserJwt,
+            AuthMiddleware.verificarRol(UserRoles.PROFESOR, UserRoles.ADMIN),
+        ], controller.updatePublicacion);
+
         router.delete("/:id", [
             AuthMiddleware.validateUserJwt,
             AuthMiddleware.verificarRol(UserRoles.PROFESOR, UserRoles.ADMIN),

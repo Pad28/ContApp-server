@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PublicacionesService } from "../services/publicaciones.service";
-import { CreatePublicacionDto, DeletePublicacionDto, SearchIdDto } from "../../domain/dtos";
+import { CreatePublicacionDto, DeletePublicacionDto, SearchIdDto, UpdatePublicacionDto } from "../../domain/dtos";
 import { AppController } from "../share";
 import path from "path";
 
@@ -53,7 +53,12 @@ export class PublicacionController extends AppController {
 
     public updatePublicacion = (req: Request, res: Response) => {
         const { id } = req.params;
+        const [error, updateDto] = UpdatePublicacionDto.create({ ...req.body, id });
+        if (error || !updateDto) return res.status(400).json({ error });
 
+        this.publicacionService.updatePublicacion(updateDto)
+            .then(pub => res.json(pub))
+            .catch(error => this.triggerError(error, res));
     }
 
     public deletePublicacion = (req: Request, res: Response) => {

@@ -47,10 +47,10 @@ model Publicacion {
   fecha_publicacion DateTime
 
   id_grupo String
-  fk_grupo Grupo  @relation(references: [id], fields: [id_grupo])
+  fk_grupo Grupo  @relation(references: [id], fields: [id_grupo], onDelete: Cascade)
 
   id_profesor String
-  fk_profesor Usuario @relation(references: [matricula], fields: [id_profesor])
+  fk_profesor Usuario @relation(references: [matricula], fields: [id_profesor], onDelete: Cascade)
 }
 
 model ActividadContestada {
@@ -58,17 +58,17 @@ model ActividadContestada {
   fecha DateTime @db.DateTime()
 
   id_alumno String  @db.VarChar(38)
-  fk_alumno Usuario @relation(references: [matricula], fields: [id_alumno])
+  fk_alumno Usuario @relation(references: [matricula], fields: [id_alumno], onDelete: Cascade)
 
   id_actividad String    @db.VarChar(38)
-  fk_actividad Actividad @relation(fields: [id_actividad], references: [id])
+  fk_actividad Actividad @relation(fields: [id_actividad], references: [id], onDelete: Cascade)
 
   @@unique([id_alumno, id_actividad])
 }
 
 model Actividad {
   id               String   @id @default(uuid())
-  nombre           String   @unique @db.VarChar(38)
+  nombre           String   @db.VarChar(38)
   fecha_creacion   DateTime @db.DateTime()
   fecha_activacion DateTime @db.DateTime()
   fecha_limite     DateTime @db.DateTime()
@@ -82,7 +82,7 @@ model Pregunta {
   pregunta String @db.VarChar(150)
 
   id_actividad String    @db.VarChar(40)
-  fk_actividad Actividad @relation(fields: [id_actividad], references: [id])
+  fk_actividad Actividad @relation(fields: [id_actividad], references: [id], onDelete: Cascade)
 
   fk_respuesta Respuesta[]
 }
@@ -93,5 +93,5 @@ model Respuesta {
   esCorrecta Boolean
 
   id_pregunta String   @db.VarChar(40)
-  fk_pregunta Pregunta @relation(fields: [id_pregunta], references: [id])
+  fk_pregunta Pregunta @relation(fields: [id_pregunta], references: [id], onDelete: Cascade)
 }
