@@ -13,9 +13,7 @@ class CreateActividadDto {
             const validators = new config_1.Validators(data);
             validators.requiredKeys("nombre", "fecha_activacion", "fecha_limite");
             validators.capitalizar("nombre");
-            validators.isDate("fecha_activacion");
             validators.checkPattern("fecha_activacion", /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
-            validators.isDate("fecha_limite");
             validators.checkPattern("fecha_limite", /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
             const { nombre, fecha_activacion, fecha_limite } = validators.data;
             return [undefined, new CreateActividadDto(nombre, fecha_activacion, fecha_limite)];

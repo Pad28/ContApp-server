@@ -50,6 +50,12 @@ class PublicacionController extends share_1.AppController {
         };
         this.updatePublicacion = (req, res) => {
             const { id } = req.params;
+            const [error, updateDto] = dtos_1.UpdatePublicacionDto.create(Object.assign(Object.assign({}, req.body), { id }));
+            if (error || !updateDto)
+                return res.status(400).json({ error });
+            this.publicacionService.updatePublicacion(updateDto)
+                .then(pub => res.json(pub))
+                .catch(error => this.triggerError(error, res));
         };
         this.deletePublicacion = (req, res) => {
             const { id } = req.params;

@@ -7,9 +7,11 @@ const routes_2 = require("./auth/routes");
 const routes_3 = require("./grupo/routes");
 const routes_4 = require("./actividad/routes");
 const routes_5 = require("./publicacion/routes");
+const routes_6 = require("./actividad-contestada/routes");
 class AppRoutes {
     static get routes() {
         const router = (0, express_1.Router)();
+        router.use("/api/actividad-contestada", routes_6.ActividadContestatdaRoutes.routes);
         router.use("/api/actividad", routes_4.ActividadRoutes.routes);
         router.use("/api/auth", routes_2.AuthRoutes.routes);
         router.use("/api/grupo", routes_3.GrupoRoutes.routes);

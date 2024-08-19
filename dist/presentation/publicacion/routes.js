@@ -30,6 +30,10 @@ class PublicacionRoutes {
             middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.PROFESOR, data_1.UserRoles.ADMIN),
             upload.single("file"),
         ], controller.crearPublicacion);
+        router.put("/", [
+            middlewares_1.AuthMiddleware.validateUserJwt,
+            middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.PROFESOR, data_1.UserRoles.ADMIN),
+        ], controller.updatePublicacion);
         router.delete("/:id", [
             middlewares_1.AuthMiddleware.validateUserJwt,
             middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.PROFESOR, data_1.UserRoles.ADMIN),
