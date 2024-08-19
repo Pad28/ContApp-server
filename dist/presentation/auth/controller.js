@@ -64,6 +64,7 @@ class AuthController extends share_1.AppController {
                 .then(msg => res.json(msg))
                 .catch(error => this.triggerError(error, res));
         };
+        // Genera un nuevo token a partir de otro mientras este no halla expirado
         this.renewJWT = (req, res) => {
             const { user } = req.body;
             const [error, renewTokenDto] = dtos_1.RenewTokenDto.create(user);

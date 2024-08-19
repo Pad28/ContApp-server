@@ -9,6 +9,12 @@ class ActividadContestatdaRoutes {
     static get routes() {
         const router = (0, express_1.Router)();
         const controller = new controller_1.ActividadContestadaController(new services_1.ActividadContestadaService());
+        router.get("/activity-by-id/:id", [
+            middlewares_1.AuthMiddleware.validateUserJwt,
+        ], controller.getPublicacionByDocumentId);
+        router.get("/activities-by-alumno/:id", [
+            middlewares_1.AuthMiddleware.validateUserJwt,
+        ], controller.getActivitiesByAlumno);
         router.post("/", [
             middlewares_1.AuthMiddleware.validateUserJwt
         ], controller.insertarActiviadadContestada);

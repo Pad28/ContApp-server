@@ -10,6 +10,14 @@ export class ActividadContestatdaRoutes {
             new ActividadContestadaService(),
         );
 
+        router.get("/activity-by-id/:id", [
+            AuthMiddleware.validateUserJwt,
+        ], controller.getPublicacionByDocumentId);
+
+        router.get("/activities-by-alumno/:id", [
+            AuthMiddleware.validateUserJwt,
+        ], controller.getActivitiesByAlumno);
+
         router.post("/", [
             AuthMiddleware.validateUserJwt
         ], controller.insertarActiviadadContestada);

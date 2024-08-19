@@ -27,9 +27,24 @@ exports.PublicacionesService = void 0;
 const path_1 = __importDefault(require("path"));
 const data_1 = require("../../data");
 const domain_1 = require("../../domain");
+const config_1 = require("../../config");
 class PublicacionesService {
     constructor(fileManager) {
         this.fileManager = fileManager;
+    }
+    getDocToImage(searchDto, pageNumber) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { publicacion } = data_1.prisma;
+            const existPub = yield publicacion.findFirst({ where: { id_material: searchDto.id } });
+            if (!existPub)
+                throw domain_1.RequestError.badRequest("Publicación no encontrada");
+            const filePath = path_1.default.resolve(__dirname, "../../../uploads/publicaciones/", existPub.id_material);
+            const savePath = path_1.default.resolve(__dirname, "../../../uploads/tmp/");
+            const image = yield config_1.pdf2pic.convert(filePath, pageNumber, savePath);
+            if (!image)
+                throw domain_1.RequestError.notFound("Error al generar la imagen");
+            return image;
+        });
     }
     getPublicationByDocId(searchDto) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -37,7 +52,8 @@ class PublicacionesService {
             const existPub = yield publicacion.findFirst({ where: { id_material: searchDto.id } });
             if (!existPub)
                 throw domain_1.RequestError.badRequest("Publicación no encontrada");
-            return existPub;
+            console.log(existPub);
+            return path_1.default.resolve(__dirname + `../../../../uploads/publicaciones/${existPub.id_material}`);
         });
     }
     listPublicacionesByGrupoId(searchDto) {

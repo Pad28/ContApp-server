@@ -5,3 +5,4 @@ export * from "./jwt.adapter";
 export * from "./validators";
 export * from "./email-templates";
 export * from "./uuid.adapater";
+export * from "./pdf2pic.adapter";

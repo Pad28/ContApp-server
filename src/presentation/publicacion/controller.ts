@@ -1,23 +1,43 @@
+import fs from "fs";
+
 import { Request, Response } from "express";
 import { PublicacionesService } from "../services/publicaciones.service";
-import { CreatePublicacionDto, DeletePublicacionDto, SearchIdDto, UpdatePublicacionDto } from "../../domain/dtos";
 import { AppController } from "../share";
-import path from "path";
+
+import {
+    CreatePublicacionDto,
+    DeletePublicacionDto,
+    SearchIdDto,
+    UpdatePublicacionDto
+} from "../../domain/dtos";
 
 export class PublicacionController extends AppController {
     constructor(
         private readonly publicacionService: PublicacionesService,
     ) { super(); }
 
-    public getPublicacionByDocumentID = (req: Request, res: Response) => {
+    public getDocToImage = (req: Request, res: Response) => {
+        const { id, pageNumber } = req.params;
+        const [error, searchDto] = SearchIdDto.create({ id });
+        if (error || !searchDto) return res.status(400).json({ error });
+
+        this.publicacionService.getDocToImage(searchDto, +pageNumber)
+            .then(result => {
+                res.sendFile(result.path!);
+                setTimeout(() => {
+                    fs.unlinkSync(result.path!);
+                }, 50)
+            })
+            .catch(error => this.triggerError(error, res));
+    }
+
+    public getPublicacionByDocumentId = (req: Request, res: Response) => {
         const { id } = req.params;
         const [error, searchDto] = SearchIdDto.create({ id });
         if (error || !searchDto) return res.status(400).json({ error });
 
         this.publicacionService.getPublicationByDocId(searchDto)
-            .then(pub => res.sendFile(
-                path.resolve(__dirname + `../../../..//uploads/publicaciones/${pub.id_material}`)
-            ))
+            .then(pub => res.sendFile(pub))
             .catch(error => this.triggerError(error, res));
     }
 

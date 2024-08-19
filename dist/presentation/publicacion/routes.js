@@ -16,9 +16,12 @@ class PublicacionRoutes {
         const router = (0, express_1.Router)();
         const controller = new controller_1.PublicacionController(new publicaciones_service_1.PublicacionesService(new services_1.FileManagerService()));
         const upload = (0, multer_1.default)({ dest: 'uploads/tmp' });
+        router.get("/document-to-image/:id/:pageNumber", [
+            middlewares_1.AuthMiddleware.validateUserJwt,
+        ], controller.getDocToImage);
         router.get("/by-document-id/:id", [
             middlewares_1.AuthMiddleware.validateUserJwt,
-        ], controller.getPublicacionByDocumentID);
+        ], controller.getPublicacionByDocumentId);
         router.get("/by-group-id/:id", [
             middlewares_1.AuthMiddleware.validateUserJwt,
         ], controller.getPublicacionByGrupoId);

@@ -14,6 +14,33 @@ const data_1 = require("../../data");
 const domain_1 = require("../../domain");
 class ActividadContestadaService {
     constructor() { }
+    getActivityById(idDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { actividadContestada } = data_1.prisma;
+            const existActivity = yield actividadContestada.findUnique({
+                where: {
+                    id: idDto.id,
+                }
+            });
+            if (!existActivity)
+                throw domain_1.RequestError.badRequest("Actividad no encontrada");
+            return existActivity;
+        });
+    }
+    getActivitiesByAlumno(idDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { usuario, actividadContestada } = data_1.prisma;
+            const existAlumno = yield usuario.findUnique({
+                where: {
+                    matricula: idDto.id,
+                }
+            });
+            if (!existAlumno)
+                throw domain_1.RequestError.badRequest("Alumno no valido");
+            const results = yield actividadContestada.findMany({ where: { id_alumno: idDto.id } });
+            return { results };
+        });
+    }
     insertarActividadContestada(createDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const { actividadContestada, usuario, actividad } = data_1.prisma;

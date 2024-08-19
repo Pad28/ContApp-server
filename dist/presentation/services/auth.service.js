@@ -22,9 +22,9 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuhtService = void 0;
 const client_1 = require("@prisma/client");
-const config_1 = require("../../config");
 const data_1 = require("../../data");
 const domain_1 = require("../../domain");
+const config_1 = require("../../config");
 class AuhtService {
     constructor(emailService, tokenManager) {
         this.emailService = emailService;

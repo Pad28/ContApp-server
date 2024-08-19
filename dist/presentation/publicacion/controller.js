@@ -4,20 +4,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PublicacionController = void 0;
-const dtos_1 = require("../../domain/dtos");
+const fs_1 = __importDefault(require("fs"));
 const share_1 = require("../share");
-const path_1 = __importDefault(require("path"));
+const dtos_1 = require("../../domain/dtos");
 class PublicacionController extends share_1.AppController {
     constructor(publicacionService) {
         super();
         this.publicacionService = publicacionService;
-        this.getPublicacionByDocumentID = (req, res) => {
+        this.getDocToImage = (req, res) => {
+            const { id, pageNumber } = req.params;
+            const [error, searchDto] = dtos_1.SearchIdDto.create({ id });
+            if (error || !searchDto)
+                return res.status(400).json({ error });
+            this.publicacionService.getDocToImage(searchDto, +pageNumber)
+                .then(result => {
+                res.sendFile(result.path);
+                setTimeout(() => {
+                    fs_1.default.unlinkSync(result.path);
+                }, 50);
+            })
+                .catch(error => this.triggerError(error, res));
+        };
+        this.getPublicacionByDocumentId = (req, res) => {
             const { id } = req.params;
             const [error, searchDto] = dtos_1.SearchIdDto.create({ id });
             if (error || !searchDto)
                 return res.status(400).json({ error });
             this.publicacionService.getPublicationByDocId(searchDto)
-                .then(pub => res.sendFile(path_1.default.resolve(__dirname + `../../../..//uploads/publicaciones/${pub.id_material}`)))
+                .then(pub => res.sendFile(pub))
                 .catch(error => this.triggerError(error, res));
         };
         this.getPublicacionByGrupoId = (req, res) => {

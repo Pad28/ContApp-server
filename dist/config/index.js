@@ -21,3 +21,4 @@ __exportStar(require("./jwt.adapter"), exports);
 __exportStar(require("./validators"), exports);
 __exportStar(require("./email-templates"), exports);
 __exportStar(require("./uuid.adapater"), exports);
+__exportStar(require("./pdf2pic.adapter"), exports);

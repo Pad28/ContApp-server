@@ -1,12 +1,16 @@
 import { User_roles } from "@prisma/client";
+import { EmailService } from "./emai.service";
+import { TokenManager } from "./token-manager.service";
+import { prisma } from "../../data";
+import { RequestError } from "../../domain";
+
 import {
     JwtAdapter,
     bcryptjsAdapter,
     checkEmailTemplate,
     forgotPasswordEmailTemplate
 } from "../../config";
-import { prisma } from "../../data";
-import { RequestError } from "../../domain";
+
 import {
     CheckEmailAlumnoDto,
     ForgotPasswordDto,
@@ -16,8 +20,7 @@ import {
     RegisterStudentDto,
     RenewTokenDto
 } from "../../domain/dtos";
-import { EmailService } from "./emai.service";
-import { TokenManager } from "./token-manager.service";
+
 
 
 export class AuhtService {

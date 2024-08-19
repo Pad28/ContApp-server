@@ -16,9 +16,13 @@ export class PublicacionRoutes {
         );
         const upload = multer({ dest: 'uploads/tmp' });
 
+        router.get("/document-to-image/:id/:pageNumber", [
+            AuthMiddleware.validateUserJwt,
+        ], controller.getDocToImage);
+
         router.get("/by-document-id/:id", [
             AuthMiddleware.validateUserJwt,
-        ], controller.getPublicacionByDocumentID);
+        ], controller.getPublicacionByDocumentId);
 
         router.get("/by-group-id/:id", [
             AuthMiddleware.validateUserJwt,

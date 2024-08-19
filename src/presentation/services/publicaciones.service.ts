@@ -3,17 +3,35 @@ import { prisma, UserRoles } from "../../data";
 import { RequestError } from "../../domain";
 import { CreatePublicacionDto, DeletePublicacionDto, SearchIdDto, UpdatePublicacionDto } from "../../domain/dtos";
 import { FileManagerService } from "./file-manager.service";
+import { pdf2pic } from "../../config";
 
 export class PublicacionesService {
     constructor(
         private readonly fileManager: FileManagerService,
     ) { }
 
+    public async getDocToImage(searchDto: SearchIdDto, pageNumber: number) {
+        const { publicacion } = prisma;
+        const existPub = await publicacion.findFirst({ where: { id_material: searchDto.id } });
+        if (!existPub) throw RequestError.badRequest("Publicación no encontrada");
+
+        const filePath = path.resolve(
+            __dirname, "../../../uploads/publicaciones/", existPub.id_material
+        );
+        const savePath = path.resolve(__dirname, "../../../uploads/tmp/")
+
+        const image = await pdf2pic.convert(filePath, pageNumber, savePath);
+        if (!image) throw RequestError.notFound("Error al generar la imagen");
+        return image;
+    }
+
     public async getPublicationByDocId(searchDto: SearchIdDto) {
         const { publicacion } = prisma;
         const existPub = await publicacion.findFirst({ where: { id_material: searchDto.id } });
         if (!existPub) throw RequestError.badRequest("Publicación no encontrada");
-        return existPub;
+        console.log(existPub);
+
+        return path.resolve(__dirname + `../../../../uploads/publicaciones/${existPub.id_material}`);
     }
 
     public async listPublicacionesByGrupoId(searchDto: SearchIdDto) {
@@ -24,6 +42,7 @@ export class PublicacionesService {
         return {
             results: await publicacion.findMany({
                 where: { id_grupo: searchDto.id }
+
             })
         };
     }

@@ -79,6 +79,7 @@ export class AuthController extends AppController {
             .catch(error => this.triggerError(error, res));
     }
 
+    // Genera un nuevo token a partir de otro mientras este no halla expirado
     public renewJWT = (req: Request, res: Response) => {
         const { user } = req.body;
         const [error, renewTokenDto] = RenewTokenDto.create(user);
