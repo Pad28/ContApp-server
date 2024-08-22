@@ -38,6 +38,7 @@ export class PublicacionRoutes {
         ], controller.getPublicacionByProfesorId);
 
         // Crear publicación y subir documento pdf, adminte rol de PROFESOR y ADMIN
+        // El archivo a subir debe estar en una key nombrada 'file' en el form-data
         router.post("/", [
             AuthMiddleware.validateUserJwt,
             AuthMiddleware.verificarRol(UserRoles.PROFESOR, UserRoles.ADMIN),
