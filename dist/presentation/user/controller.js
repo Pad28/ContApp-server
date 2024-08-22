@@ -31,8 +31,6 @@ class UserController extends share_1.AppController {
         this.updateAlumno = (req, res) => {
             const { id } = req.params;
             const { user } = req.body;
-            if (id !== user.matricula)
-                return res.status(401).json({ error: "No autorizado" });
             const [error, updateAlumnoDto] = dtos_1.UpdateAlumnoDto.create(Object.assign(Object.assign({}, req.body), { matricula: id }));
             if (error || !updateAlumnoDto)
                 return res.status(400).json({ error });

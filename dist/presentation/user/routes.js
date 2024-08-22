@@ -21,7 +21,6 @@ class UserRoutes {
         ], controller.createAlumno);
         router.put("/alumno/:id", [
             middlewares_1.AuthMiddleware.validateUserJwt,
-            middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.ALUMNO),
         ], controller.updateAlumno);
         router.put("/profesor/:id", [
             middlewares_1.AuthMiddleware.validateUserJwt,
