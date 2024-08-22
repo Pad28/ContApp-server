@@ -25,7 +25,6 @@ export class UserRoutes {
 
         router.put("/alumno/:id", [
             AuthMiddleware.validateUserJwt,
-            AuthMiddleware.verificarRol(UserRoles.ALUMNO),
         ], controller.updateAlumno);
 
         router.put("/profesor/:id", [
