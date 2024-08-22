@@ -21,6 +21,7 @@ class AuthRoutes {
         router.post("/forgot-password", controller.forgotPassword);
         // Cambio de contraseña una vez se ha recibido el token de verificación al correo del usuario 
         router.post("/recover-password/:token", controller.recoveryPassword);
+        // Renovar JWT
         router.post("/renew-token", [
             middlewares_1.AuthMiddleware.validateUserJwt
         ], controller.renewJWT);

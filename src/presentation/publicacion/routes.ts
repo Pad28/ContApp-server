@@ -16,33 +16,41 @@ export class PublicacionRoutes {
         );
         const upload = multer({ dest: 'uploads/tmp' });
 
+        // Servir pagina de PDF como imagen, la consulta se realiza a travez del ID del documento
+        // en lugar del ID de publicación, debe incluir la extencion .pdf
         router.get("/document-to-image/:id/:pageNumber", [
             AuthMiddleware.validateUserJwt,
         ], controller.getDocToImage);
 
+        // Servir PDF por medio del id del documento
         router.get("/by-document-id/:id", [
             AuthMiddleware.validateUserJwt,
         ], controller.getPublicacionByDocumentId);
 
+        // Lista de documentos por medio del nombre del grupo
         router.get("/by-group-id/:id", [
             AuthMiddleware.validateUserJwt,
         ], controller.getPublicacionByGrupoId);
 
+        // lista de documentos por medio de la matricual del profesor
         router.get("/by-profesor-id/:id", [
             AuthMiddleware.validateUserJwt,
         ], controller.getPublicacionByProfesorId);
 
+        // Crear publicación y subir documento pdf, adminte rol de PROFESOR y ADMIN
         router.post("/", [
             AuthMiddleware.validateUserJwt,
             AuthMiddleware.verificarRol(UserRoles.PROFESOR, UserRoles.ADMIN),
             upload.single("file"),
         ], controller.crearPublicacion);
 
-        router.put("/", [
+        // Actualizar información de la publicaión por medio del id
+        router.put("/:id", [
             AuthMiddleware.validateUserJwt,
             AuthMiddleware.verificarRol(UserRoles.PROFESOR, UserRoles.ADMIN),
         ], controller.updatePublicacion);
 
+        // Eliminar publicación por medio del id
         router.delete("/:id", [
             AuthMiddleware.validateUserJwt,
             AuthMiddleware.verificarRol(UserRoles.PROFESOR, UserRoles.ADMIN),

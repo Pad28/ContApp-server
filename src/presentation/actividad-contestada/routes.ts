@@ -10,14 +10,18 @@ export class ActividadContestatdaRoutes {
             new ActividadContestadaService(),
         );
 
+        // Buscar actividad contestada por ID
         router.get("/activity-by-id/:id", [
             AuthMiddleware.validateUserJwt,
-        ], controller.getPublicacionByDocumentId);
+        ], controller.getActivityById);
 
+        // Lista de actividades contestadas por un alumno, 
+        // busqueda realizado por medio de la matricula del alumno 
         router.get("/activities-by-alumno/:id", [
             AuthMiddleware.validateUserJwt,
         ], controller.getActivitiesByAlumno);
 
+        // Crear registro de actividad contestada
         router.post("/", [
             AuthMiddleware.validateUserJwt
         ], controller.insertarActiviadadContestada);

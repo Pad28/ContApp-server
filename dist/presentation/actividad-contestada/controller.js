@@ -7,7 +7,7 @@ class ActividadContestadaController extends share_1.AppController {
     constructor(actividadContestadaService) {
         super();
         this.actividadContestadaService = actividadContestadaService;
-        this.getPublicacionByDocumentId = (req, res) => {
+        this.getActivityById = (req, res) => {
             const { id } = req.params;
             const [error, searchIdDto] = dtos_1.SearchIdDto.create({ id });
             if (error || !searchIdDto)

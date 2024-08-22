@@ -8,7 +8,7 @@ export class ActividadContestadaController extends AppController {
         private readonly actividadContestadaService: ActividadContestadaService
     ) { super(); }
 
-    public getPublicacionByDocumentId = (req: Request, res: Response) => {
+    public getActivityById = (req: Request, res: Response) => {
         const { id } = req.params;
         const [error, searchIdDto] = SearchIdDto.create({ id });
         if (error || !searchIdDto) return res.status(400).json({ error });

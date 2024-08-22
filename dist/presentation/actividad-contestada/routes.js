@@ -9,12 +9,16 @@ class ActividadContestatdaRoutes {
     static get routes() {
         const router = (0, express_1.Router)();
         const controller = new controller_1.ActividadContestadaController(new services_1.ActividadContestadaService());
+        // Buscar actividad contestada por ID
         router.get("/activity-by-id/:id", [
             middlewares_1.AuthMiddleware.validateUserJwt,
-        ], controller.getPublicacionByDocumentId);
+        ], controller.getActivityById);
+        // Lista de actividades contestadas por un alumno, 
+        // busqueda realizado por medio de la matricula del alumno 
         router.get("/activities-by-alumno/:id", [
             middlewares_1.AuthMiddleware.validateUserJwt,
         ], controller.getActivitiesByAlumno);
+        // Crear registro de actividad contestada
         router.post("/", [
             middlewares_1.AuthMiddleware.validateUserJwt
         ], controller.insertarActiviadadContestada);
