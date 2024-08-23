@@ -7,6 +7,15 @@ class ActidvidadController extends share_1.AppController {
     constructor(actividadService) {
         super();
         this.actividadService = actividadService;
+        this.getActivityById = (req, res) => {
+            const { id } = req.params;
+            const [error, searchDto] = dtos_1.SearchIdDto.create({ id });
+            if (error || !searchDto)
+                return res.status(400).json({ error });
+            this.actividadService.getActivityById(searchDto)
+                .then(result => res.json(result))
+                .catch(error => this.triggerError(error, res));
+        };
         this.getActividades = (req, res) => {
             this.actividadService.getAvtividades()
                 .then(results => res.json(results))

@@ -30,6 +30,15 @@ class ActividadService {
             return { results: yield actividad.findMany() };
         });
     }
+    getActivityById(seacthDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { actividad } = data_1.prisma;
+            return yield actividad.findUnique({
+                where: { id: seacthDto.id },
+                include: { fk_pregunta: { include: { fk_respuesta: true } } }
+            });
+        });
+    }
     createActividad(createDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const { actividad } = data_1.prisma;

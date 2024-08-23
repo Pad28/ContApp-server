@@ -14,6 +14,9 @@ class ActividadRoutes {
         router.get("/", [
             middlewares_1.AuthMiddleware.validateUserJwt
         ], controller.getActividades);
+        router.get("/:id", [
+            middlewares_1.AuthMiddleware.validateUserJwt
+        ], controller.getActivityById);
         // Crear una actividad con el rol de profesor o de administrador
         router.post("/", [
             middlewares_1.AuthMiddleware.validateUserJwt,

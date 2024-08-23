@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AppController } from "../share";
-import { CreateActividadDto, DeleteActividadDto, UpdateActividadDto } from "../../domain/dtos";
+import { CreateActividadDto, DeleteActividadDto, SearchIdDto, UpdateActividadDto } from "../../domain/dtos";
 import { ActividadService } from "../services";
 
 
@@ -8,6 +8,16 @@ export class ActidvidadController extends AppController {
     constructor(
         private actividadService: ActividadService,
     ) { super(); }
+
+    public getActivityById = (req: Request, res: Response) => {
+        const { id } = req.params;
+        const [error, searchDto] = SearchIdDto.create({ id });
+        if (error || !searchDto) return res.status(400).json({ error });
+
+        this.actividadService.getActivityById(searchDto)
+            .then(result => res.json(result))
+            .catch(error => this.triggerError(error, res));
+    }
 
     public getActividades = (req: Request, res: Response) => {
         this.actividadService.getAvtividades()

@@ -9,6 +9,14 @@ export class ActividadService {
         return { results: await actividad.findMany() };
     }
 
+    public async getActivityById(seacthDto: SearchIdDto) {
+        const { actividad } = prisma;
+        return await actividad.findUnique({
+            where: { id: seacthDto.id },
+            include: { fk_pregunta: { include: { fk_respuesta: true } } }
+        });
+    }
+
     public async createActividad(createDto: CreateActividadDto) {
         const { actividad } = prisma;
 
