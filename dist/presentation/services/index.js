@@ -22,3 +22,5 @@ __exportStar(require("./grupo.service"), exports);
 __exportStar(require("./actividad.service"), exports);
 __exportStar(require("./file-manager.service"), exports);
 __exportStar(require("./actividad-contestada.service"), exports);
+__exportStar(require("./pregunta.service"), exports);
+__exportStar(require("./respuesta.service"), exports);

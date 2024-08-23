@@ -6,3 +6,5 @@ export * from "./grupo.service";
 export * from "./actividad.service";
 export * from "./file-manager.service";
 export * from "./actividad-contestada.service";
+export * from "./pregunta.service";
+export * from "./respuesta.service";
