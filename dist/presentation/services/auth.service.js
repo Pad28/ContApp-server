@@ -52,6 +52,10 @@ class AuhtService {
     createStudentByVerifyEmail(regsiterStudentDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const { usuario, grupo } = data_1.prisma;
+            if (this.tokenManager.getData.has(regsiterStudentDto.token)) {
+                throw domain_1.RequestError.badRequest("Enlace caducado");
+            }
+            this.tokenManager.saveToken(regsiterStudentDto.token);
             const payload = yield config_1.JwtAdapter.validateToken(regsiterStudentDto.token);
             if (!payload)
                 throw domain_1.RequestError.badRequest("Token no valido");
@@ -120,7 +124,7 @@ class AuhtService {
             });
             if (!existAlumno)
                 throw domain_1.RequestError.badRequest("Usuario no valido");
-            const token = yield config_1.JwtAdapter.generateToken({ correo: forgotPasswordDto.correo }, "1h");
+            const token = yield config_1.JwtAdapter.generateToken({ correo: forgotPasswordDto.correo });
             if (!token)
                 throw domain_1.RequestError.internalServerError();
             this.emailService.sendEmail({
@@ -138,6 +142,7 @@ class AuhtService {
             const { password, token } = recoverPasswordDto;
             if (this.tokenManager.getData.has(token))
                 throw domain_1.RequestError.badRequest("Enlace caducado");
+            this.tokenManager.saveToken(token);
             const payload = yield config_1.JwtAdapter.validateToken(token);
             if (!payload)
                 throw domain_1.RequestError.badRequest("Token no valido");
@@ -149,7 +154,6 @@ class AuhtService {
                 where: { correo: payload.correo },
                 data: { password: newPassword }
             });
-            this.tokenManager.saveToken(token);
             return { msg: "Constraseña actualizada" };
         });
     }

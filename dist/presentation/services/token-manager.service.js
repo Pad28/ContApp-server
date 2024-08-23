@@ -10,9 +10,14 @@ class TokenManager {
     constructor() {
         this.data = new Map();
         this.repositoryPath = path_1.default.resolve(__dirname + "../../../data/local_storage");
+        this.loadData();
     }
     get getData() {
         return this.data;
+    }
+    loadData() {
+        const result = fs_1.default.readFileSync(this.repositoryPath + "/data.json", { encoding: "utf-8" });
+        Object.keys(JSON.parse(result)).forEach(k => this.data.set(k, k));
     }
     saveFile() {
         const data = {};
@@ -27,7 +32,7 @@ class TokenManager {
         setTimeout(() => {
             this.data.delete(token);
             this.saveFile();
-        }, (3600 * 1000));
+        }, (3600 * 1000 * 4));
     }
 }
 exports.TokenManager = TokenManager;

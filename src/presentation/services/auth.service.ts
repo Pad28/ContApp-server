@@ -51,6 +51,12 @@ export class AuhtService {
     // Crear cuenta como alumno una vez se recibio el correo de verificación
     public async createStudentByVerifyEmail(regsiterStudentDto: RegisterStudentDto) {
         const { usuario, grupo } = prisma;
+
+        if (this.tokenManager.getData.has(regsiterStudentDto.token)) {
+            throw RequestError.badRequest("Enlace caducado");
+        }
+        this.tokenManager.saveToken(regsiterStudentDto.token);
+
         const payload = await JwtAdapter.validateToken<{ id: string }>(regsiterStudentDto.token);
         if (!payload) throw RequestError.badRequest("Token no valido");
 
@@ -127,7 +133,7 @@ export class AuhtService {
         });
         if (!existAlumno) throw RequestError.badRequest("Usuario no valido");
 
-        const token = await JwtAdapter.generateToken({ correo: forgotPasswordDto.correo }, "1h");
+        const token = await JwtAdapter.generateToken({ correo: forgotPasswordDto.correo });
         if (!token) throw RequestError.internalServerError();
 
         this.emailService.sendEmail({
@@ -145,6 +151,7 @@ export class AuhtService {
         const { password, token } = recoverPasswordDto;
 
         if (this.tokenManager.getData.has(token)) throw RequestError.badRequest("Enlace caducado");
+        this.tokenManager.saveToken(token);
 
         const payload = await JwtAdapter.validateToken<{ correo: string }>(token);
         if (!payload) throw RequestError.badRequest("Token no valido");
@@ -158,7 +165,6 @@ export class AuhtService {
             data: { password: newPassword }
         });
 
-        this.tokenManager.saveToken(token);
         return { msg: "Constraseña actualizada" };
     }
 
