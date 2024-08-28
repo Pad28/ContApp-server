@@ -9,20 +9,21 @@ const path_1 = __importDefault(require("path"));
 class TokenManager {
     constructor() {
         this.data = new Map();
-        this.repositoryPath = path_1.default.resolve(__dirname + "../../../data/local_storage");
+        this.fileName = "tokens.json";
+        this.repositoryPath = path_1.default.resolve(__dirname + "../../../../data");
         this.loadData();
     }
     get getData() {
         return this.data;
     }
     loadData() {
-        const result = fs_1.default.readFileSync(this.repositoryPath + "/data.json", { encoding: "utf-8" });
+        const result = fs_1.default.readFileSync(this.repositoryPath + `/${this.fileName}`, { encoding: "utf-8" });
         Object.keys(JSON.parse(result)).forEach(k => this.data.set(k, k));
     }
     saveFile() {
         const data = {};
         this.data.forEach(e => data[e] = e);
-        fs_1.default.writeFileSync(this.repositoryPath + "/data.json", JSON.stringify(data));
+        fs_1.default.writeFileSync(this.repositoryPath + `/${this.fileName}`, JSON.stringify(data));
     }
     saveToken(token) {
         if (!fs_1.default.existsSync(this.repositoryPath))

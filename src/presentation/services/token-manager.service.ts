@@ -5,10 +5,13 @@ export class TokenManager {
 
     private data: Map<string, string>;
     private repositoryPath: string;
+    private fileName: string;
 
     constructor() {
+
         this.data = new Map<string, string>();
-        this.repositoryPath = path.resolve(__dirname + "../../../data/local_storage");
+        this.fileName = "tokens.json";
+        this.repositoryPath = path.resolve(__dirname + "../../../../data");
         this.loadData();
     }
 
@@ -17,14 +20,14 @@ export class TokenManager {
     }
 
     private loadData() {
-        const result = fs.readFileSync(this.repositoryPath + "/data.json", { encoding: "utf-8" });
+        const result = fs.readFileSync(this.repositoryPath + `/${this.fileName}`, { encoding: "utf-8" });
         Object.keys(JSON.parse(result)).forEach(k => this.data.set(k, k));
     }
 
     private saveFile() {
         const data: { [key: string]: string } = {};
         this.data.forEach(e => data[e] = e);
-        fs.writeFileSync(this.repositoryPath + "/data.json", JSON.stringify(data));
+        fs.writeFileSync(this.repositoryPath + `/${this.fileName}`, JSON.stringify(data));
     }
 
     public saveToken(token: string) {
