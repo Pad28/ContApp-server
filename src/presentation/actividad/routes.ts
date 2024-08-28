@@ -11,14 +11,20 @@ export class ActividadRoutes {
             new ActividadService()
         );
 
+        // Buscar actividad por Id
+        router.get("/:id", [
+            AuthMiddleware.validateUserJwt
+        ], controller.getActivityById);
+
+        //Entrega la lista de actividades por grupo
+        router.get("/get-activity-by-group/:id", [
+            AuthMiddleware.validateUserJwt,
+        ], controller.getActivityByGroup)
+
         // Entrega la lista de actividades
         router.get("/", [
             AuthMiddleware.validateUserJwt
         ], controller.getActividades);
-
-        router.get("/:id", [
-            AuthMiddleware.validateUserJwt
-        ], controller.getActivityById);
 
         // Crear una actividad con el rol de profesor o de administrador
         router.post("/", [

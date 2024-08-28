@@ -9,16 +9,27 @@ export class ActividadService {
         return { results: await actividad.findMany() };
     }
 
+    public async getActivityByGroup(searchDto: SearchIdDto) {
+        const { actividad } = prisma;
+        return await actividad.findMany({
+            where: { id_grupo: searchDto.id },
+            // include: { fk_pregunta: { include: { fk_respuesta: true, _count: true } } }
+        })
+    }
+
     public async getActivityById(seacthDto: SearchIdDto) {
         const { actividad } = prisma;
         return await actividad.findUnique({
             where: { id: seacthDto.id },
-            include: { fk_pregunta: { include: { fk_respuesta: true } } }
+            include: { fk_pregunta: { include: { fk_respuesta: true, _count: true } } }
         });
     }
 
     public async createActividad(createDto: CreateActividadDto) {
-        const { actividad } = prisma;
+        const { actividad, grupo } = prisma;
+
+        const existGroup = await grupo.findUnique({ where: { id: createDto.id_grupo } });
+        if (!existGroup) throw RequestError.badRequest("Grupo no encontrado");
 
         // Obtener la fecha y hora local
         const date = new Date();
@@ -33,6 +44,7 @@ export class ActividadService {
         return await actividad.create({
             data: {
                 nombre: createDto.nombre,
+                id_grupo: existGroup.id,
                 fecha_creacion: formattedDate,
                 fecha_limite: createDto.fecha_limite,
                 fecha_activacion: createDto.fecha_activacion,

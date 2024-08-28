@@ -30,18 +30,30 @@ class ActividadService {
             return { results: yield actividad.findMany() };
         });
     }
+    getActivityByGroup(searchDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { actividad } = data_1.prisma;
+            return yield actividad.findMany({
+                where: { id_grupo: searchDto.id },
+                // include: { fk_pregunta: { include: { fk_respuesta: true, _count: true } } }
+            });
+        });
+    }
     getActivityById(seacthDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const { actividad } = data_1.prisma;
             return yield actividad.findUnique({
                 where: { id: seacthDto.id },
-                include: { fk_pregunta: { include: { fk_respuesta: true } } }
+                include: { fk_pregunta: { include: { fk_respuesta: true, _count: true } } }
             });
         });
     }
     createActividad(createDto) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { actividad } = data_1.prisma;
+            const { actividad, grupo } = data_1.prisma;
+            const existGroup = yield grupo.findUnique({ where: { id: createDto.id_grupo } });
+            if (!existGroup)
+                throw domain_1.RequestError.badRequest("Grupo no encontrado");
             // Obtener la fecha y hora local
             const date = new Date();
             const year = date.getFullYear();
@@ -54,6 +66,7 @@ class ActividadService {
             return yield actividad.create({
                 data: {
                     nombre: createDto.nombre,
+                    id_grupo: existGroup.id,
                     fecha_creacion: formattedDate,
                     fecha_limite: createDto.fecha_limite,
                     fecha_activacion: createDto.fecha_activacion,

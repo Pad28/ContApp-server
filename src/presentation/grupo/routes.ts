@@ -21,6 +21,11 @@ export class GrupoRoutes {
             AuthMiddleware.verificarRol(UserRoles.ADMIN),
         ], controller.createGrupo);
 
+        router.put("/:id", [
+            AuthMiddleware.validateUserJwt,
+            AuthMiddleware.verificarRol(UserRoles.PROFESOR, UserRoles.ADMIN),
+        ], controller.updateGroup)
+
         return router;
     }
 }

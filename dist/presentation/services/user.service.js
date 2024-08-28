@@ -35,6 +35,7 @@ class UserService {
                     nombre: true,
                     apellidos: true,
                     id_grupo: true,
+                    matricula: true,
                 }
             });
             return { results };

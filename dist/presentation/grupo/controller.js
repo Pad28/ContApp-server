@@ -20,6 +20,14 @@ class GrupoController extends share_1.AppController {
                 .then(results => res.json(results))
                 .catch(error => this.triggerError(error, res));
         };
+        this.updateGroup = (req, res) => {
+            const [error, updaDto] = dtos_1.UpdateGrupoDto.create(Object.assign(Object.assign({}, req.body), { id: req.params.id }));
+            if (error || !updaDto)
+                return res.status(400).json({ error });
+            this.grupoService.updateGrupo(updaDto)
+                .then(result => res.json(result))
+                .catch(error => this.triggerError(error, res));
+        };
     }
 }
 exports.GrupoController = GrupoController;

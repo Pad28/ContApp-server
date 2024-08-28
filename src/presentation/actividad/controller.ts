@@ -9,6 +9,16 @@ export class ActidvidadController extends AppController {
         private actividadService: ActividadService,
     ) { super(); }
 
+    public getActivityByGroup = (req: Request, res: Response) => {
+        const { id } = req.params;
+        const [error, searchDto] = SearchIdDto.create({ id });
+        if (error || !searchDto) return res.status(400).json({ error });
+
+        this.actividadService.getActivityByGroup(searchDto)
+            .then(result => res.json(result))
+            .catch(error => this.triggerError(error, res));
+    }
+
     public getActivityById = (req: Request, res: Response) => {
         const { id } = req.params;
         const [error, searchDto] = SearchIdDto.create({ id });

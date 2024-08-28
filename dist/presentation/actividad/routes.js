@@ -10,13 +10,18 @@ class ActividadRoutes {
     static get routes() {
         const router = (0, express_1.Router)();
         const controller = new controller_1.ActidvidadController(new services_1.ActividadService());
+        // Buscar actividad por Id
+        router.get("/:id", [
+            middlewares_1.AuthMiddleware.validateUserJwt
+        ], controller.getActivityById);
+        //Entrega la lista de actividades por grupo
+        router.get("/get-activity-by-group/:id", [
+            middlewares_1.AuthMiddleware.validateUserJwt,
+        ], controller.getActivityByGroup);
         // Entrega la lista de actividades
         router.get("/", [
             middlewares_1.AuthMiddleware.validateUserJwt
         ], controller.getActividades);
-        router.get("/:id", [
-            middlewares_1.AuthMiddleware.validateUserJwt
-        ], controller.getActivityById);
         // Crear una actividad con el rol de profesor o de administrador
         router.post("/", [
             middlewares_1.AuthMiddleware.validateUserJwt,

@@ -37,6 +37,7 @@ model Grupo {
 
   fk_alumnos     Usuario[]     @relation(name: "alumno_grupo")
   fk_publicacion Publicacion[]
+  fk_actividad   Actividad[]
 }
 
 model Publicacion {
@@ -72,6 +73,9 @@ model Actividad {
   fecha_creacion   DateTime @db.DateTime()
   fecha_activacion DateTime @db.DateTime()
   fecha_limite     DateTime @db.DateTime()
+
+  id_grupo String @db.VarChar(12)
+  fk_grupo Grupo  @relation(references: [id], fields: [id_grupo], onDelete: Cascade)
 
   fk_pregunta   Pregunta[]
   fk_contestada ActividadContestada[]

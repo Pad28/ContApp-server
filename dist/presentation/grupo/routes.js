@@ -17,6 +17,10 @@ class GrupoRoutes {
             middlewares_1.AuthMiddleware.validateUserJwt,
             middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.ADMIN),
         ], controller.createGrupo);
+        router.put("/:id", [
+            middlewares_1.AuthMiddleware.validateUserJwt,
+            middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.PROFESOR, data_1.UserRoles.ADMIN),
+        ], controller.updateGroup);
         return router;
     }
 }
