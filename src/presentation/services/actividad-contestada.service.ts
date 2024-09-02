@@ -22,12 +22,52 @@ export class ActividadContestadaService {
         const existAlumno = await usuario.findUnique({
             where: {
                 matricula: idDto.id,
-            }
+            },
         });
 
         if (!existAlumno) throw RequestError.badRequest("Alumno no valido");
-        const results = await actividadContestada.findMany({ where: { id_alumno: idDto.id } });
-        return { results };
+        const results = await actividadContestada.findMany({
+            where: { id_alumno: idDto.id },
+            include: {
+                fk_actividad: {
+                    include: {
+                        fk_pregunta: {
+                            include: {
+                                fk_pregunta_respondida: { include: { fk_respuesta: true } }
+                            }
+                        },
+                    }
+                }
+            },
+            orderBy: { fk_actividad: { fecha_creacion: "asc" } }
+        });
+
+        const data = results.map(e => {
+            const { fk_pregunta } = e.fk_actividad;
+            const questionData = fk_pregunta.map(j => {
+                const fk_pregunta_respondida = j.fk_pregunta_respondida.map(c => {
+                    const { fk_respuesta, id } = c;
+                    return {
+                        id,
+                        fk_respuesta
+                    }
+                });
+
+                return {
+                    id_actividad: j.id,
+                    fk_pregunta_respondida,
+                }
+            });
+
+            return {
+                id_actividad_contestada: e.id,
+                id_actividad: e.id_actividad,
+                fk_actividad: questionData
+
+            }
+        })
+
+        return { results: data };
 
     }
 

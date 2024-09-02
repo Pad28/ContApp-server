@@ -2,7 +2,7 @@ import { User_roles } from "@prisma/client";
 import { bcryptjsAdapter } from "../../config";
 import { prisma } from "../../data";
 import { RequestError } from "../../domain";
-import { CreateAlumnoDto, CreateProfesorDto, UpdateAlumnoDto, UpdateProfesorDto } from "../../domain/dtos";
+import { CreateAlumnoDto, CreateProfesorDto, SearchIdDto, UpdateAlumnoDto, UpdateProfesorDto } from "../../domain/dtos";
 
 
 export class UserService {
@@ -18,6 +18,38 @@ export class UserService {
                 apellidos: true,
                 id_grupo: true,
                 matricula: true,
+            }
+        });
+        return { results };
+    }
+
+    public async getStudentsByGroup(serachDto: SearchIdDto) {
+        const { usuario } = prisma;
+        const results = await usuario.findMany({
+            where: { id_grupo: serachDto.id },
+            select: {
+                nombre: true,
+                apellidos: true,
+                id_grupo: true,
+                matricula: true,
+                correo: true,
+            }
+        });
+        return { results };
+    }
+
+    public async getStudentsByTutor(serachDto: SearchIdDto) {
+        const { usuario, grupo } = prisma;
+
+
+        const results = await usuario.findMany({
+            where: { fk_grupo: { id_maestro: serachDto.id } },
+            select: {
+                nombre: true,
+                apellidos: true,
+                id_grupo: true,
+                matricula: true,
+                correo: true,
             }
         });
         return { results };

@@ -14,6 +14,18 @@ export class UserRoutes {
         // Listar los nombres de los profesores
         router.get("/profesor/names", controller.getTeacharNames);
 
+
+        router.get("/alumnos-por-tutor/:tutor", [
+            AuthMiddleware.validateUserJwt,
+            AuthMiddleware.verificarRol(UserRoles.ADMIN, UserRoles.PROFESOR),
+        ], controller.getStudentsByTutor);
+
+        // Listar alimnos por grupo
+        router.get("/alumnos-por-grupo/:group", [
+            AuthMiddleware.validateUserJwt,
+            AuthMiddleware.verificarRol(UserRoles.ADMIN, UserRoles.PROFESOR),
+        ], controller.getStudentsByGroup);
+
         // Crear un profesor, adminte el rol de ADMIN
         router.post("/profesor", [
             AuthMiddleware.validateUserJwt,

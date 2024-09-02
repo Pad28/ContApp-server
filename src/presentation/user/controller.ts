@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import { AppController } from "../share";
-import { CreateAlumnoDto, CreateProfesorDto, UpdateAlumnoDto, UpdateProfesorDto } from "../../domain/dtos";
+import { CreateAlumnoDto, CreateProfesorDto, SearchIdDto, UpdateAlumnoDto, UpdateProfesorDto } from "../../domain/dtos";
 import { UserService } from "../services";
 import { UserRoles } from "../../data";
 
@@ -12,6 +12,24 @@ export class UserController extends AppController {
     public getTeacharNames = (req: Request, res: Response) => {
         this.userService.getTeacherNames()
             .then(names => res.json(names))
+            .catch(error => this.triggerError(error, res));
+    }
+
+    public getStudentsByTutor = (req: Request, res: Response) => {
+        const { tutor } = req.params;
+        const [error, searchDto] = SearchIdDto.create({ id: tutor });
+        if (error || !searchDto) return res.status(400).json({ error });
+        this.userService.getStudentsByTutor(searchDto)
+            .then(results => res.json(results))
+            .catch(error => this.triggerError(error, res));
+    }
+
+    public getStudentsByGroup = (req: Request, res: Response) => {
+        const { group } = req.params;
+        const [error, searchDto] = SearchIdDto.create({ id: group });
+        if (error || !searchDto) return res.status(400).json({ error });
+        this.userService.getStudentsByGroup(searchDto)
+            .then(results => res.json(results))
             .catch(error => this.triggerError(error, res));
     }
 
