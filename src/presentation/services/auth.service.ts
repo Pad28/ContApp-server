@@ -52,7 +52,7 @@ export class AuhtService {
     public async createStudentByVerifyEmail(regsiterStudentDto: RegisterStudentDto) {
         const { usuario, grupo } = prisma;
 
-        if (this.tokenManager.getData.has(regsiterStudentDto.token)) {
+        if (this.tokenManager.getData.includes(regsiterStudentDto.token)) {
             throw RequestError.badRequest("Enlace caducado");
         }
         this.tokenManager.saveToken(regsiterStudentDto.token);
@@ -150,7 +150,7 @@ export class AuhtService {
         const { usuario } = prisma;
         const { password, token } = recoverPasswordDto;
 
-        if (this.tokenManager.getData.has(token)) throw RequestError.badRequest("Enlace caducado");
+        if (this.tokenManager.getData.includes(token)) throw RequestError.badRequest("Enlace caducado");
         this.tokenManager.saveToken(token);
 
         const payload = await JwtAdapter.validateToken<{ correo: string }>(token);

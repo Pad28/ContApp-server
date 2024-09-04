@@ -9,7 +9,7 @@ export class AuthRoutes {
         const controller = new AuthController(
             new AuhtService(
                 new EmailService(),
-                new TokenManager(),
+                new TokenManager("tokens.json"),
             ),
         );
 

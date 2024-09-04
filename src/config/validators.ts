@@ -80,6 +80,11 @@ export class Validators {
         this.data[key] = this.data[key] as string;
     }
 
+    public isArray(key: string) {
+        this.isRequired(key);
+        if (Array.isArray(this.data[key])) throw `${key} no es un array`;
+    }
+
     public checkPattern(key: string, pattern: RegExp) {
         this.isRequired(key);
         if (!pattern.test(this.data[key])) throw `Formato de ${key} no valido`;

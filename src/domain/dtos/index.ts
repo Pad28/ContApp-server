@@ -22,3 +22,4 @@ export * from "./user/create-alumno.dto";
 export * from "./user/create-profesor.dto";
 export * from "./user/update-alumno.dto";
 export * from "./user/update-profesor.dto";
+export * from "./preguntaRespondida/create-pregunta-respondida.dto";
