@@ -12,6 +12,24 @@ class UserController extends share_1.AppController {
                 .then(names => res.json(names))
                 .catch(error => this.triggerError(error, res));
         };
+        this.getStudentsByTutor = (req, res) => {
+            const { tutor } = req.params;
+            const [error, searchDto] = dtos_1.SearchIdDto.create({ id: tutor });
+            if (error || !searchDto)
+                return res.status(400).json({ error });
+            this.userService.getStudentsByTutor(searchDto)
+                .then(results => res.json(results))
+                .catch(error => this.triggerError(error, res));
+        };
+        this.getStudentsByGroup = (req, res) => {
+            const { group } = req.params;
+            const [error, searchDto] = dtos_1.SearchIdDto.create({ id: group });
+            if (error || !searchDto)
+                return res.status(400).json({ error });
+            this.userService.getStudentsByGroup(searchDto)
+                .then(results => res.json(results))
+                .catch(error => this.triggerError(error, res));
+        };
         this.createProfesor = (req, res) => {
             const [error, createProfesorDto] = dtos_1.CreateProfesorDto.create(req.body);
             if (error || !createProfesorDto)

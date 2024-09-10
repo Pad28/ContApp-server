@@ -8,7 +8,7 @@ const middlewares_1 = require("../middlewares");
 class AuthRoutes {
     static get routes() {
         const router = (0, express_1.Router)();
-        const controller = new controller_1.AuthController(new services_1.AuhtService(new services_1.EmailService(), new services_1.TokenManager()));
+        const controller = new controller_1.AuthController(new services_1.AuhtService(new services_1.EmailService(), new services_1.TokenManager("tokens.json")));
         // Ruta para iniciar sesión como alumno
         router.post("/alumno", controller.loginAlumno);
         // Ruta para iniciar sesión como profesor

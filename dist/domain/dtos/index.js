@@ -38,3 +38,4 @@ __exportStar(require("./user/create-alumno.dto"), exports);
 __exportStar(require("./user/create-profesor.dto"), exports);
 __exportStar(require("./user/update-alumno.dto"), exports);
 __exportStar(require("./user/update-profesor.dto"), exports);
+__exportStar(require("./preguntaRespondida/create-pregunta-respondida.dto"), exports);

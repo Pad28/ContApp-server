@@ -79,6 +79,11 @@ class Validators {
             throw `${key} no es una cadena valida`;
         this.data[key] = this.data[key];
     }
+    isArray(key) {
+        this.isRequired(key);
+        if (Array.isArray(this.data[key]))
+            throw `${key} no es un array`;
+    }
     checkPattern(key, pattern) {
         this.isRequired(key);
         if (!pattern.test(this.data[key]))

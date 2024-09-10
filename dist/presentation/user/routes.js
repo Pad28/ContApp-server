@@ -12,6 +12,15 @@ class UserRoutes {
         const controller = new controller_1.UserController(new services_1.UserService());
         // Listar los nombres de los profesores
         router.get("/profesor/names", controller.getTeacharNames);
+        router.get("/alumnos-por-tutor/:tutor", [
+            middlewares_1.AuthMiddleware.validateUserJwt,
+            middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.ADMIN, data_1.UserRoles.PROFESOR),
+        ], controller.getStudentsByTutor);
+        // Listar alimnos por grupo
+        router.get("/alumnos-por-grupo/:group", [
+            middlewares_1.AuthMiddleware.validateUserJwt,
+            middlewares_1.AuthMiddleware.verificarRol(data_1.UserRoles.ADMIN, data_1.UserRoles.PROFESOR),
+        ], controller.getStudentsByGroup);
         // Crear un profesor, adminte el rol de ADMIN
         router.post("/profesor", [
             middlewares_1.AuthMiddleware.validateUserJwt,

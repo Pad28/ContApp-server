@@ -52,7 +52,7 @@ class AuhtService {
     createStudentByVerifyEmail(regsiterStudentDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const { usuario, grupo } = data_1.prisma;
-            if (this.tokenManager.getData.has(regsiterStudentDto.token)) {
+            if (this.tokenManager.getData.includes(regsiterStudentDto.token)) {
                 throw domain_1.RequestError.badRequest("Enlace caducado");
             }
             this.tokenManager.saveToken(regsiterStudentDto.token);
@@ -140,7 +140,7 @@ class AuhtService {
         return __awaiter(this, void 0, void 0, function* () {
             const { usuario } = data_1.prisma;
             const { password, token } = recoverPasswordDto;
-            if (this.tokenManager.getData.has(token))
+            if (this.tokenManager.getData.includes(token))
                 throw domain_1.RequestError.badRequest("Enlace caducado");
             this.tokenManager.saveToken(token);
             const payload = yield config_1.JwtAdapter.validateToken(token);

@@ -41,6 +41,38 @@ class UserService {
             return { results };
         });
     }
+    getStudentsByGroup(serachDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { usuario } = data_1.prisma;
+            const results = yield usuario.findMany({
+                where: { id_grupo: serachDto.id },
+                select: {
+                    nombre: true,
+                    apellidos: true,
+                    id_grupo: true,
+                    matricula: true,
+                    correo: true,
+                }
+            });
+            return { results };
+        });
+    }
+    getStudentsByTutor(serachDto) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { usuario, grupo } = data_1.prisma;
+            const results = yield usuario.findMany({
+                where: { fk_grupo: { id_maestro: serachDto.id } },
+                select: {
+                    nombre: true,
+                    apellidos: true,
+                    id_grupo: true,
+                    matricula: true,
+                    correo: true,
+                }
+            });
+            return { results };
+        });
+    }
     createProfesor(createProfesorDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const { usuario } = data_1.prisma;

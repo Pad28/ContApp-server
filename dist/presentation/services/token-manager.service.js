@@ -6,10 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TokenManager = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+// Este servicio guarda de manera local los tokens generados 
 class TokenManager {
-    constructor() {
-        this.data = new Map();
-        this.fileName = "tokens.json";
+    constructor(fileName) {
+        this.fileName = fileName;
+        this.data = new Array();
         this.repositoryPath = path_1.default.resolve(__dirname + "../../../../data");
         this.loadData();
     }
@@ -18,20 +19,16 @@ class TokenManager {
     }
     loadData() {
         const result = fs_1.default.readFileSync(this.repositoryPath + `/${this.fileName}`, { encoding: "utf-8" });
-        Object.keys(JSON.parse(result)).forEach(k => this.data.set(k, k));
+        this.data = JSON.parse(result).map(str => str);
     }
     saveFile() {
-        const data = {};
-        this.data.forEach(e => data[e] = e);
-        fs_1.default.writeFileSync(this.repositoryPath + `/${this.fileName}`, JSON.stringify(data));
+        fs_1.default.writeFileSync(this.repositoryPath + `/${this.fileName}`, JSON.stringify(this.data));
     }
     saveToken(token) {
-        if (!fs_1.default.existsSync(this.repositoryPath))
-            fs_1.default.mkdirSync(this.repositoryPath);
-        this.data.set(token, token);
+        this.data.push(token);
         this.saveFile();
         setTimeout(() => {
-            this.data.delete(token);
+            this.data = this.data.filter(str => str != token);
             this.saveFile();
         }, (3600 * 1000 * 4));
     }
